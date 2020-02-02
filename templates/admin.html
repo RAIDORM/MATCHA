@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+    <title>Hello, world!</title>
+  </head>
+  <body>
+  	<div class="container">
+		<div class="row">
+				{% for user in users %}
+            	<div class="item col-4">
+            	<p> il reste :
+            	{% if user[1] == 0 %}
+            	<span class="urgent"> {{ user[1] }} </span>
+            	{% else %}
+            	{{ user[1] }}
+            	{% endif %}
+            	trajets à <span class="name">{{ user[0] }}</span> !</p>
+            	<p>Dernière utilisation : {{ user[2] }}</p>
+            	<form action="http://localhost:5000/result" method="POST" accept-charset="utf-8">
+            		<p>
+            			Nombre de trajet souhaité en plus :
+            			<input type="text" name="nb_trajet">
+            			<input type="hidden" name="uid" value="{{ user[3] }}">
+            			<input type="hidden" name="trajet_actuel" value="{{ user[1] }}">
+            		</p>
+            		<button type="submit" class="btn btn-success">Valider !</button>
+            	</form>
+        	</div>
+        {% endfor %}
+			</div>
+		</div>
+  	</div>
+  </body>
+</html>

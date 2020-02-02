@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <div class="item">
+            {% for user_info in data %}
+            <p>Bonjour <span class="name">{{ user_info[0] }}</span> il vous reste {{user_info[1] }} trajets !</p>
+            <form action="http://localhost:5000/result" method="post">
+                <p>Nombre de trajet souhaité en plus : <input type="text" name="nb_trajet"></p>
+                <p>numéro carte : <input type="text"></p>
+                <p>expire le : <input type="text"></p>
+                <p>VCC : <input type="password"></p>
+                <input type="hidden" name="trajet_actuel" value="{{ user_info[1] }}">
+                <input type="hidden" name="uid" value="{{ user_info[2] }}">
+                <button type="submit" class="btn btn-success">Valider !</button>
+            </form>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

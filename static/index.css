@@ -1,0 +1,40 @@
+.container{
+	font-family: 'Montserrat', sans-serif;
+}
+
+.row{
+    text-align: center;
+}
+
+.name{
+	color: #ff971d;
+	font-weight: bold;
+}
+
+.item{
+	text-align: center;
+	color: #444444;
+	margin: 20px;
+}
+
+.urgent{
+	color: #c9485b;
+	font-weight: bold;
+}
+
+.form{
+    display: inline;
+    text-align: center;
+    width: 100%;
+    margin: 150px;
+}
+
+.success{
+	text-align: center;
+	margin: 50px;
+}
+
+#logo{
+	width: 150px;
+	margin: 20px;
+}
