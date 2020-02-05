@@ -5,16 +5,16 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+	<meta http-equiv="refresh" content="3;url=/" />
 </head>
 <body>
-	<div class="container">
+	<div class="success_container">
 		<div class="success">
-		<p>Votre paiement pour
+		<p class="text">Votre paiement pour
 		{% if trajet %}
-			{{ trajet }}
+			<span class="orange">{{ trajet }}
 		{% endif %}
-		trajets a été correctement validé !</p>
-		<a href="/" title="back home"><button type="button" class="btn btn-success">Retour accueil</button></a>
+		trajets </span> a été correctement validé !<br>Retour à l'accueil dans 3 sec</p>
 		</div>
 	</div>
 </body>

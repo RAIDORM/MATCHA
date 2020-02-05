@@ -34,10 +34,28 @@ def payment():
 def admin():
     conn = sqlite3.connect('matcha.db')
     c = conn.cursor()
-    c.execute('SELECT name, tickets, bip_card_time, uid FROM users')
-    users = c.fetchall()
+    c.execute('SELECT name, tickets, bip_card_time, uid FROM users ORDER BY tickets ASC')
+    data = c.fetchall()
+    c.execute('SELECT date FROM passages')
+    passages = c.fetchall()
+    a, b, c, d, e, f= (0,)*6
+    for user in data:
+        tickets = user[1]
+        if tickets >= 40:
+            a += 1
+        if tickets >= 30:
+            b += 1
+        if tickets >= 20:
+            c += 1
+        if tickets >= 10:
+            d += 1
+        if tickets >= 5:
+            e += 1
+        if tickets < 5:
+            f += 1
+    graph = [a, b, c, d, e, f]
     conn.close()
-    return render_template("admin.html", users=users)
+    return render_template("admin.html", data=data, graph=graph)
 
 
 @app.route('/result', methods=['POST'])

@@ -13,7 +13,7 @@
             {% for user_info in data %}
             <p>Bonjour <span class="name">{{ user_info[0] }}</span> il vous reste {{user_info[1] }} trajets !</p>
             <form action="http://localhost:5000/result" method="post">
-                <p>Nombre de trajet souhaité en plus : <input type="text" name="nb_trajet"></p>
+                <p>Nombre de trajet souhaité en plus : <input type="number" name="nb_trajet"></p>
                 <p>numéro carte : <input type="text"></p>
                 <p>expire le : <input type="text"></p>
                 <p>VCC : <input type="password"></p>

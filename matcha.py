@@ -32,7 +32,8 @@ def bdd(uid):
     conn = sqlite3.connect('matcha.db')
     c = conn.cursor()
     now = datetime.datetime.now()
-    date = str(now.day) + '/' + str(now.month) + '/' + str(now.year) + ' ' + str(now.hour) + ':' +  str(now.minute)
+    date = str(now.day) + '/' + str(now.month) + '/' + str(now.year) + '/' + str(now.hour) + ':' + str(now.minute)
+    c.execute("INSERT INTO passages (date) values (?)", (date,))
     c.execute("SELECT * FROM users WHERE uid = ?", (uid,))
     result = c.fetchall()
     tickets = result[0][2] - 1
@@ -51,6 +52,7 @@ def bdd(uid):
         conn.commit()
     else:
         serial_writer('dv'.encode('ascii'))
-    conn.close()
+        conn.close()
+
 
 serial_listener()
