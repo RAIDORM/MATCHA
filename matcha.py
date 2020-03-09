@@ -1,10 +1,23 @@
-﻿import serial
-import sqlite3
-import time
+import serial
 import datetime
 
-# connexion a la bdd et au port série
-ser = serial.Serial("COM35", 9600)
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+# import de sqlalchemy et de ma table users
+from database_setup import users, Base
+
+# connexion a la bdd
+engine = create_engine('sqlite:///database.db')
+Base.metadata.bind = engine
+# creation d'une session de connexion a la bdd
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+
+# configuration du port série
+print('Entrez le port COM de votre arduino')
+com_number = input()
+ser = serial.Serial("COM" + com_number, 9600)
 
 
 # fonction d'écoute sur le port série
@@ -14,10 +27,10 @@ def serial_listener():
         print(f'Port {ser.name} open')
         while True:
             line = ser.readline()
-            # rstrip to avoid end of line problem
-            print(line.decode().rstrip())
-            if len(line.decode().rstrip()) == 8:
-                bdd(line.decode().rstrip())
+            result = line.decode().rstrip()
+            # rstrip pour enlever les EOL et 8 pour la lenght de l'UID
+            if len(result) == 8:
+                bdd(result)
 
 
 # fonction d'écriture sur la liaison série
@@ -29,30 +42,25 @@ def serial_writer(message):
 # fonction de select du nombre de trajets de l'utilisateur
 
 def bdd(uid):
-    conn = sqlite3.connect('matcha.db')
-    c = conn.cursor()
-    now = datetime.datetime.now()
-    date = str(now.day) + '/' + str(now.month) + '/' + str(now.year) + '/' + str(now.hour) + ':' + str(now.minute)
-    c.execute("INSERT INTO passages (date) values (?)", (date,))
-    c.execute("SELECT * FROM users WHERE uid = ?", (uid,))
-    result = c.fetchall()
-    tickets = result[0][2] - 1
-    c.execute("SELECT bip_card_time FROM users WHERE uid = ?",(uid,))
-    date_from_user = c.fetchall()
-    if date != date_from_user[0][0]:
-        c.execute("UPDATE users SET bip_card_time = ? WHERE uid = ?", (date, uid))
-        if tickets <= -1:
-            c.execute("UPDATE users SET tickets = 0 WHERE uid = ?", (uid,))
-            tickets = -1
-        else:
-            c.execute("UPDATE users SET tickets = ? WHERE uid = ?", (tickets, uid))
+    # récupération de la date
+    date = datetime.datetime.now().strftime('%d/%m/%Y/%H:%M')
+    # Requête de toute la ligne correspondant à l'uid en paramètre
+    user_info = session.query(users).filter(users.uid == uid).one()
+    # Si la date actuelle différente de la date dans la bdd
+    if date != user_info.bip_card_time:
+        # mise a jour de la date dans la bdd
+        user_info.bip_card_time = date
+        tickets = user_info.tickets
+        # Si l'utilisateur a 0 trajet alors on revoit -1 sinon renvoi du nombre de
+        # trajets acheté et on remet dans tous les cas le nombre de trajets a 0
+        # dans la bdd.
+        user_info.tickets = 0
         serial_writer(str(tickets).encode("ascii"))
         print(tickets)
-        c.fetchall()
-        conn.commit()
     else:
+        # dv pour déjà validé
         serial_writer('dv'.encode('ascii'))
-        conn.close()
+    session.commit()
 
 
 serial_listener()

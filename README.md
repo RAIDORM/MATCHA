@@ -1,18 +1,41 @@
 # MATCHA Project
 
-The matcha project is a project which aim to automate a bus tickets system.
+The MATCHA project est un projet de final d'étude qui vise à automatiser un système de gestion de carte de bus.
+
+## Hardware
+
+| Module                          |       Fonction      |
+|---------------------------------|:-------------------:|
+| DFR0021-R                       | LED rouge           |
+| DFR0021-G                       | LED verte           |
+| DFR0032                         | Buzzer              |
+| GDM2004D                        | Ecran               |
+| CLCD-216                        | Convertisseur écran |
+| SM130                           | Module RFID         |
+| SparkFun RFID Evaluation Shield | RFID Board          |
+| MF1 IC S50                      | Carte 1k stockage   |
 
 ## Technologies used
 
-We used C++ and python 3.8.
+* C++
+* Python 3.8
+* Flask
+* SQLAlchemy
+* SQLite
 
 ## Usage
 
-run the server.py and the matcha.py.
+matcha.py => Script gestion requêtes bdd
+
+server.py => Script Flask backend
+
+RFID.ino => Script arduino gestion écran, buzzer, led, RFID
+
+Lien d'accès serveur local :
+
 ```
 localhost:5000
 ```
-to access to the web server.
 
 ## Contributing
-Thanks to Anthony and Maxime to helped me out on this project.
+Projet réalisé avec l'aide de Maxime et Anthony
