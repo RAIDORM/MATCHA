@@ -1,6 +1,6 @@
 # MATCHA Project
 
-The MATCHA project est un projet de final d'étude qui vise à automatiser un système de gestion de carte de bus.
+The MATCHA project est un projet final d'étude qui vise à automatiser un système de gestion de carte de bus.
 
 ## Hardware
 
