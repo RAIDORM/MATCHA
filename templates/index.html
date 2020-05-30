@@ -1,31 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>MATCHA</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+	<title>MATCHA</title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+	<link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='notiflix-2.1.3.min.css') }}" rel="stylesheet">
+	<script src="{{ url_for('static',filename='ajax.js') }}">
+	</script>
 </head>
+
 <body>
-    <div class="container">
-        <div class="row form">
-            <div class="col-12">
-                <form action="http://localhost:5000/" method="POST" accept-charset="utf-8" class="form">
-                    <input type="text" name="name">
-                    <button type="submit" class="btn btn-success">Valider !</button>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-            {% if data %}
-                {% for user in data %}
-                    <div class="item">
-                        <a href="payment?user={{ user[0] }}">{{ user[0] }}</a>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
+	<script src="../static/notiflix-2.1.3.min.js">
+	</script> 
+	<script>
+	   Notiflix.Notify.Init({ closeButton: true, width: "350px", });
+	</script>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xl-6 col-12 img-container"><img alt="logo" class="logo" src="../static/images/bande5.png">
+			</div>
+		</div>
+
+
+		<div class="row main">
+			<div class="col-xl-3 form-main base-form">
+				<h1>Inscription</h1>
+
+
+				<h2 class="font-weight-light">Simple et rapide</h2>
+
+
+				<form id="form_register" name="form_register">
+					<div class="form-group">
+						<input class="form-control" id="prenom" placeholder="Prenom" type="text">
+					</div>
+
+
+					<div class="form-group">
+						<input class="form-control" id="nom" placeholder="Nom" type="text">
+					</div>
+
+
+					<div class="form-group">
+						<input class="form-control" id="uid_register" maxlength="8" placeholder="UID" type="text">
+					</div>
+
+
+					<div class="form-group">
+						<input class="form-control" id="password_register" placeholder="Mot de passe" type="password">
+					</div>
+					<button class="btn is-orange" type="submit">Inscription</button>
+				</form>
+			</div>
+
+
+			<div class="col-xl-3 form-main base-form">
+				<h1>Déjà membre ?</h1>
+
+
+				<h2 class="font-weight-light">Connectez vous !</h2>
+
+
+				<div class="field">
+					<form id='form_login' name="form_login">
+						<div class="form-group">
+							<input class="form-control" id="uid_login" name="uid" maxlength="8" placeholder="UID" type="text">
+						</div>
+
+
+						<div class="form-group">
+							<input class="form-control" id="password_login" name="password" placeholder="Mot de passe" type="password">
+						</div>
+						<button class="btn is-orange" type="submit">Connexion</button>
+					</form>
+				</div>
+			</div>
+
+
+			<div class="col-xl-3 form-main" id="tickets-form">
+				<h1>Bonjour<br><span id="nom_paiement"></span></h1>
+
+
+				<h2 class="font-weight-light">Il vous reste <span id="tickets_paiement_info"></span> trajets</h2>
+
+
+				<div class="field">
+					<form id='form_paiement' name="form_paiement">
+						<div class="form-group">
+							<input class="form-control" id="tickets_paiement" name="tickets_paiement" placeholder="Nombre de trajets" type="number">
+						</div>
+						<input hidden="" id="uid_paiement" name="uid_paiement" type="text"> <input hidden="" id="password_paiement" name="password_paiement" type="text"> <button class="btn is-orange" type="submit">Acheter</button>
+					</form>
+					<button class="btn deco" onclick="window.location.reload();">Déconnexion</button>
+				</div>
+			</div>
+		</div>
+
+
+		<footer>
+			<p class="responsive">Site responsive adapté à tout type d'appareil<br>
+			<span class="material-icons device device-computer">tv</span><span class="material-icons device device-tablet">tablet_android</span><span class="material-icons device device-phone">stay_primary_portrait</span></p>
+		</footer>
+	</div>
 </body>
 </html>

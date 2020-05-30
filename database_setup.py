@@ -17,7 +17,7 @@ Base = declarative_base()
 # we'll add classes here
 
 # creates a create_engine instance at the bottom of the file
-engine = create_engine('sqlite:///database.db')
+engine = create_engine('sqlite:///R:\\MATCHA-master\\database.db?check_same_thread=False')
 
 Base.metadata.create_all(engine)
 
@@ -29,7 +29,7 @@ class users(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(250), nullable=False)
-    password = Column(String(250), nullable=False)
     tickets = Column(Integer, nullable=False)
     uid = Column(String(250))
     bip_card_time = Column(String(250))
+    password = Column(String(250), nullable=False)

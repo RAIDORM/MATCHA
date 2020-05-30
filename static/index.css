@@ -1,94 +1,140 @@
-.success_container{
-    display: flex;
-    justify-content: center;
-    margin: 50px;
+body {
+	font-family: 'Open Sans', sans-serif;
+	background-color: #f7fafc
 }
 
-.name{
-	color: #ff971d;
-	font-weight: bold;
+.main {
+	padding-top: 8%;
+	justify-content: center;
+	align-items: center
 }
 
-.text{
-    text-align: center;
+#tickets-form {
+	display: none
 }
 
-.orange{
-    color: #ffab40ff;
-    font-weight: bold;
+.deco {
+	background-color: #fd6b63;
+	color: #fff;
+	margin-top: 10px
 }
 
-.item{
-	text-align: center;
-	color: #444444;
-	margin: 20px;
+.deco:hover {
+	background-color: #d9645e;
+	color: #fff
 }
 
-.item-container{
-    font-family: 'Montserrat', sans-serif;
-    font-size: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.logo {
+	width: 100px;
+	padding-top: 10px
 }
 
-#tickets_input{
-    width: 75px;
+.device {
+	font-size: 50px
 }
 
-.urgent{
-	color: #c9485b;
-	font-weight: bold;
+.responsive {
+	font-family: Roboto, sans-serif;
+	color: #657884;
+	font-size: 1rem;
+	text-align: center
 }
 
-.form{
-    display: inline;
-    text-align: center;
-    width: 100%;
-    margin: 150px;
+h1 {
+	font-size: 1.9rem;
+	font-weight: 700;
+	color: #4a557c
 }
 
-
-.highcharts-figure, .highcharts-data-table table {
-    min-width: 320px;
-    max-width: 500px;
-    margin: 1em auto;
+h1, h2 {
+	text-align: center
 }
 
-#container {
-    height: 400px;
+h2 {
+	font-family: Roboto, sans-serif;
+	color: #657884;
+	font-size: 1.2rem
 }
 
-.highcharts-figure, .highcharts-data-table table {
-    min-width: 320px;
-    max-width: 660px;
-    margin: 1em auto;
+.form_login {
+	padding-top: 20px
 }
 
-.highcharts-data-table table {
-	font-family: Verdana, sans-serif;
-	border-collapse: collapse;
-	border: 1px solid #EBEBEB;
-	margin: 10px auto;
-	text-align: center;
-	width: 100%;
-	max-width: 500px;
+.form-control {
+	font-weight: 600
 }
-.highcharts-data-table caption {
-    padding: 1em 0;
-    font-size: 1.2em;
-    color: #555;
-}
-.highcharts-data-table th {
+
+.btn {
 	font-weight: 600;
-    padding: 0.5em;
+	width: 100%
 }
-.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
-    padding: 0.5em;
+
+.is-orange {
+	background-color: #fda763;
+	color: #fff
 }
-.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
-    background: #f8f8f8;
+
+.is-orange:hover {
+	background-color: #d9955e;
+	color: #fff
 }
-.highcharts-data-table tr:hover {
-    background: #f1f7ff;
+
+.matcha {
+	color: #ff6f00;
+	font-size: 60px;
+	font-family: 'Maven Pro', sans-serif
+}
+
+@media only screen and (min-width:1200px) {
+	.device {
+		color: #444
+	}
+	.device-computer {
+		color: #ff6f00
+	}
+	.responsive {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		padding: 10px
+	}
+}
+
+@media only screen and (max-width:1200px) {
+	.device {
+		color: #444
+	}
+	.logo {
+		width: 200px
+	}
+	.device-tablet {
+		color: #ff6f00
+	}
+	.responsive {
+		padding-top: 20px
+	}
+	.form-main {
+		padding-top: 50px
+	}
+	.form-group {
+		padding-top: 2%
+	}
+	.img-container {
+		text-align: center
+	}
+}
+
+@media only screen and (max-width:766px) {
+	.logo {
+		width: 25vw
+	}
+	.device {
+		color: #444
+	}
+	.device-phone {
+		color: #ff6f00
+    }
+    footer{
+        padding-top: 10px;
+    }
 }

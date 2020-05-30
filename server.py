@@ -1,74 +1,119 @@
-from flask import Flask, render_template, request
-import sqlite3
+from flask import Flask, render_template, request, jsonify
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import users, Base
+from os import path
+import secrets
+import hashlib
 
 app = Flask(__name__)
 
-
-@app.route('/', methods=['POST', 'GET'])
-def users():
-    if len(request.form.to_dict()) != 0:
-        result = request.form.to_dict()
-        conn = sqlite3.connect('matcha.db')
-        c = conn.cursor()
-        c.execute('SELECT name, tickets, bip_card_time, uid FROM users WHERE name LIKE ?',
-                  ('%' + result['name'] + '%',))
-        data = c.fetchall()
-        conn.close()
-        return render_template('index.html', data=data)
-    else:
-        return render_template('index.html')
+app.secret_key = "RtvVBW5zju2MPBlEFAac2BsclpzMxCWr"
 
 
-@app.route('/payment', methods=['GET'])
-def payment():
-    result = request.args.get('user')
-    conn = sqlite3.connect('matcha.db')
-    c = conn.cursor()
-    c.execute('SELECT name, tickets, uid FROM users WHERE name = ?', (result,))
-    data = c.fetchall()
-    conn.close()
-    return render_template('user.html', data=data)
+engine = create_engine(
+    'sqlite:///R:\\MATCHA-master\\database.db?check_same_thread=False')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 
-@app.route('/admin')
-def admin():
-    conn = sqlite3.connect('matcha.db')
-    c = conn.cursor()
-    c.execute('SELECT name, tickets, bip_card_time, uid FROM users ORDER BY tickets ASC')
-    data = c.fetchall()
-    c.execute('SELECT date FROM passages')
-    passages = c.fetchall()
-    a, b, c, d, e, f= (0,)*6
-    for user in data:
-        tickets = user[1]
-        if tickets >= 40:
-            a += 1
-        if tickets >= 30:
-            b += 1
-        if tickets >= 20:
-            c += 1
-        if tickets >= 10:
-            d += 1
-        if tickets >= 5:
-            e += 1
-        if tickets < 5:
-            f += 1
-    graph = [a, b, c, d, e, f]
-    conn.close()
-    return render_template("admin.html", data=data, graph=graph)
+@app.route('/', methods=['GET'])
+def root():
+    return render_template('index.html')
 
 
-@app.route('/result', methods=['POST'])
-def result():
-    conn = sqlite3.connect('matcha.db')
-    c = conn.cursor()
-    result = request.form.to_dict()
-    trajet = int(result['nb_trajet']) + int(result['trajet_actuel'])
-    c.execute('UPDATE users SET tickets = ? WHERE uid = ?', (trajet, result['uid']))
-    conn.commit()
-    conn.close()
-    return render_template('success.html', trajet=result['nb_trajet'])
+@app.route('/register', methods=['POST'])
+def register():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(data)
+        data['uid'] = data['uid'].upper()
+        user_exist = session.query(users).filter(users.uid == data['uid']).scalar()
+        if user_exist == None:
+            if len(data['uid']) == 8:
+                user = users(name=data['prenom'] + " " + data['nom'], password=password(data['password']), uid=data['uid'], tickets=0)
+                session.add(user)
+                session.commit()
+                return jsonify({
+                    'title': 'Inscription réussite !',
+                    'body': "Bonjour " + data['prenom'] + " heureux de vous avoir parmi nous !"
+                })
+            else:
+                return jsonify({
+                    'error': "Désolé mais l'UID doit faire 8 caractères."
+                })
+        else:
+            return jsonify({
+                'error': "Désolé mais cet UID est déjà utilisé merci de vous connecter."
+            })
 
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(data)
+        data['uid'] = data['uid'].upper()
+        user_info = session.query(users).filter(users.uid == data['uid']).first()
+        if user_info != None:
+            if password(data['password']) == user_info.password:
+                return jsonify({
+                    'name': user_info.name,
+                    'tickets': user_info.tickets,
+                    'uid': user_info.uid,
+                    'pass': user_info.password
+                })
+            else:
+                return jsonify({
+                    'error': "Désolé mais le mot de passe ne correspond pas !"
+                })
+        else:
+            print('user false')
+            return jsonify({
+                'error': "Désolé mais je ne connais pas cet utilisateur !"
+            })
+
+
+@app.route('/paiement', methods=['POST'])
+def paiement():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(data)
+        user_info = session.query(users).filter(users.uid == data['uid_paiement']).first()
+        if user_info!= None:
+            if data['password_paiement'] == user_info.password:
+                new_tickets = user_info.tickets + int(data['tickets_paiement'])
+                user_info.tickets = new_tickets
+                session.commit()
+                return jsonify({
+                    'title': "Achat effectué",
+                    'body' : 'Votre achat pour ' + data['tickets_paiement'] + ' tickets à été effectué',
+                    'tickets' : new_tickets
+                })
+            else:
+                return jsonify({
+                    'error': "Désolé mais le mot de passe ne correspond pas !",
+                    })
+        else:
+            return jsonify({
+                'error': "Désolé mais je ne connais pas cet utilisateur !",
+                })
+
+
+#INPUT : password | type : STR
+#FUNCTION : hash password
+#RETURN : hashed password sha-256 | Type : String
+def password(password):
+    if not path.exists('secret_token.txt'):
+        f= open("secret_token.txt","w+")
+        f.write(secrets.token_hex(15))
+        f.close()
+    f = open("secret_token.txt", "r")
+    password = password[::-1] + f.read()
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    return password_hash
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
