@@ -5,6 +5,9 @@ The MATCHA project est un projet final d'étude qui vise à automatiser un syst�
 ## Demo Site Web
  ![Demo site Web](demo/demo_pc.gif)
 
+## Responsive
+![Demo site Web](demo/demo_responsive.jpg)
+
 ## Hardware
 
 | Module                          |       Fonction      |
