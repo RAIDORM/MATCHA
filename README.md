@@ -21,7 +21,7 @@ The MATCHA project est un projet final d'étude qui vise à automatiser un syst�
 | SparkFun RFID Evaluation Shield | RFID Board          |
 | MF1 IC S50                      | Carte 1k stockage   |
 
-## Technologies used
+## Technologies utilisées
 
 * C++
 * Python 3.8
@@ -29,7 +29,7 @@ The MATCHA project est un projet final d'étude qui vise à automatiser un syst�
 * SQLAlchemy
 * SQLite
 
-## Usage
+## Utilisation
 
 matcha.py => Script gestion requêtes bdd
 
