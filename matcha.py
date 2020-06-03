@@ -1,5 +1,6 @@
 import serial
 import datetime
+from serial.tools import list_ports
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -13,8 +14,14 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-
 # configuration du port série
+print('Port COM trouvés sur votre ordinateur :')
+print('---------------------------------------')
+for port in serial.tools.list_ports.comports():
+    x = str(port)
+    if 'arduino' in x.lower():
+        print(x + ' (Recommandé)')
+print('---------------------------------------')
 print('Entrez le port COM de votre arduino')
 com_number = input()
 ser = serial.Serial("COM" + com_number, 9600)
@@ -31,8 +38,9 @@ def serial_listener():
             # rstrip pour enlever les EOL et 8 pour la lenght de l'UID
             if len(result) == 8:
                 bdd(result)
-
-
+    else:
+        print('port closed')
+        input("Press any key to continue...")
 # fonction d'écriture sur la liaison série
 
 def serial_writer(message):

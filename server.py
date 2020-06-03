@@ -8,11 +8,9 @@ import hashlib
 
 app = Flask(__name__)
 
-app.secret_key = "RtvVBW5zju2MPBlEFAac2BsclpzMxCWr"
-
 
 engine = create_engine(
-    'sqlite:///R:\\MATCHA-master\\database.db?check_same_thread=False')
+    'sqlite:///database.db?check_same_thread=False')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
